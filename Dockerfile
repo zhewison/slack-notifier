@@ -4,9 +4,6 @@ ENV CGO_ENABLED=0
 WORKDIR /usr/src/
 COPY . /usr/src
 RUN go build -v -o "bin/slack-notifier" *.go
+RUN mv bin/slack-notifier /usr/local/bin
 
-FROM alpine:3.12
-RUN apk add --no-cache ca-certificates
-COPY --from=builder /usr/src/bin/* /usr/bin/
-ENV PATH $PATH:/usr/bin
-ENTRYPOINT ["slack-notifier"]
+RUN apt-get update && apt-get install -y curl jq

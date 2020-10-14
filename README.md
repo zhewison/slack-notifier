@@ -1,3 +1,9 @@
+# slack-notifier (via bot token)
+
+Forked from cloudposse/slack-notifier. Modified to use slack bot token instead of webhook to post to any user or channel.
+
+---
+
 # slack-notifier [![Build Status](https://travis-ci.org/cloudposse/slack-notifier.svg?branch=master)](https://travis-ci.org/cloudposse/slack-notifier)
 
 
@@ -21,7 +27,7 @@ __NOTE__: The module supports up to 8 Fields in an [attachment](https://api.slac
 
 | Command-line argument |  ENV var            |  Description                                                                                                                         |
 |:----------------------|:--------------------|:-------------------------------------------------------------------------------------------------------------------------------------|
-| webhook_url           | SLACK_WEBHOOK_URL   | Slack [Webhook URL](https://get.slack.help/hc/en-us/articles/115005265063-Incoming-WebHooks-for-Slack)                               |
+| webhook_url           | SLACK_BOT_TOKEN     | Token for bot user (channels.write, im.write)                                                                                        |
 | user_name             | SLACK_USER_NAME     | Slack user name (the username from which the messages will be sent)                                                                  |
 | icon_emoji            | SLACK_ICON_EMOJI    | Slack icon [emoji](https://www.webpagefx.com/tools/emoji-cheat-sheet) for the user's avatar                                          |
 | fallback              | SLACK_FALLBACK      | A plain-text summary of the attachment. This text will be used in clients that don't show formatted text                             |
@@ -81,7 +87,7 @@ CGO_ENABLED=0 go build -v -o "./dist/bin/slack-notifier" *.go
 ### run locally with ENV vars
 
 ```sh
-export SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXX"
+export SLACK_BOT_TOKEN="xoxb"
 export SLACK_USER_NAME="CodeFresh"
 export SLACK_ICON_EMOJI=":white_check_mark:"
 export SLACK_FALLBACK="Deployed to Staging environment"
@@ -111,7 +117,7 @@ export SLACK_FIELD2_SHORT="true"
 
 ```sh
 ./dist/bin/slack-notifier \
-    -webhook_url "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXX" \
+    -bot_token "xoxb" \
     -user_name "CodeFresh" \
     -icon_emoji ":white_check_mark:" \
     -fallback "Deployed to Staging environment" \
@@ -150,7 +156,7 @@ docker build --tag slack-notifier  --no-cache=true .
 
 ```sh
 docker run -i --rm \
-    -e SLACK_WEBHOOK_URL="https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXXXXXXXXXXXXXXXXXXXX" \
+    -e SLACK_BOT_TOKEN="xoxb" \
     -e SLACK_USER_NAME="CodeFresh" \
     -e SLACK_ICON_EMOJI=":white_check_mark:" \
     -e SLACK_FALLBACK="Deployed to Staging environment" \
