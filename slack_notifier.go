@@ -10,8 +10,8 @@ import (
 // SlackNotifier type
 // Set DryRun to 'true' to print the message to the console for testing (not send it to the Slack channel)
 type SlackNotifier struct {
-	WebhookURL string
-	DryRun     bool
+	BotToken string
+	DryRun   bool
 }
 
 // Payload is a Slack message with attachments
@@ -53,9 +53,9 @@ type Field struct {
 }
 
 // NewSlackNotifier creates a new SlackNotifier
-func NewSlackNotifier(webhookURL string) SlackNotifier {
+func NewSlackNotifier(botToken string) SlackNotifier {
 	return SlackNotifier{
-		WebhookURL: webhookURL,
+		BotToken: botToken,
 	}
 }
 
@@ -71,13 +71,15 @@ func (sn SlackNotifier) Notify(message Payload) error {
 		return nil
 	}
 
+	url := "https://slack.com/api/chat.postMessage"
 	body := bytes.NewBuffer(data)
-	request, err := http.NewRequest("POST", sn.WebhookURL, body)
+	request, err := http.NewRequest("POST", url, body)
 	if err != nil {
 		return err
 	}
 
 	request.Header.Add("Content-Type", "application/json; charset=utf-8")
+	request.Header.Add("Authorization", "Bearer "+sn.BotToken)
 
 	client := &http.Client{}
 	_, err = client.Do(request)
